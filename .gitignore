@@ -1,0 +1,98 @@
+############################
+# Go
+############################
+
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+
+# Go build output
+/bin/
+/build/
+/dist/
+
+# Go workspace
+go.work
+go.work.sum
+
+# Coverage / profiling
+*.out
+*.prof
+
+# Go module cache (if vendoring locally)
+vendor/
+
+############################
+# Terraform
+############################
+
+# Local Terraform directories
+**/.terraform/*
+.terraform/
+
+*/.terraform.lock.hcl
+
+# Terraform state files
+*.tfstate
+*.tfstate.*
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Terraform variable files (often secrets)
+*.tfvars
+*.tfvars.json
+
+# Terraform override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Terraform CLI configuration
+.terraformrc
+terraform.rc
+
+############################
+# Environment / Secrets
+############################
+
+.env
+.env.*
+
+############################
+# Logs
+############################
+
+*.log
+
+############################
+# IDE / Editor
+############################
+
+# VS Code
+.vscode/
+
+# IntelliJ / GoLand
+.idea/
+*.iml
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+############################
+# Misc
+############################
+
+# Temporary files
+*.tmp
+*.swp
+*~
