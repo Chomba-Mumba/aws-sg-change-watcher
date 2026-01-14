@@ -60,7 +60,7 @@ func RevokeAllSecurityGroupRules(sg types.SecurityGroup, client ec2.Client) {
 		log.Printf("successfully revoked ingress security group rule: %v", ingressRes.RevokedSecurityGroupRules[0].GroupId)
 	}
 
-	//describe sg to confirm rule removal
+	//describe sg and confirm rule removal
 	res := GetSecurityGroups(&client, *sg.GroupId)
 	sg = res.SecurityGroups[0]
 
