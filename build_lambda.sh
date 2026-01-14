@@ -1,5 +1,7 @@
 #create golang binary
-GOARCH=arm64 GOOS=linux go build -tags lambda.norpc -o ./bin/bootstrap main.go
+echo "started buidling golang binary..."
+
+GOARCH=arm64 GOOS=linux go build -tags lambda.norpc -o ./bin/bootstrap
 echo "successfully created go binary..."
 
 #zip lambda
