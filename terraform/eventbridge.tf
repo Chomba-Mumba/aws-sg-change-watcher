@@ -3,17 +3,25 @@ resource "aws_cloudwatch_event_rule" "manage_sg_rule" {
     description = "Manage changes in AWS security groups"
 
     event_pattern = jsonencode({
-        detail_type = ["AWS API Call via CloudTrail"]
-        eventName = [
-            //api action names
-            "AuthorizeSecurityGroupIngress",
-            "RevokeSecurityGroupIngress",
-            "CreateSecurityGroup",
-            "DeleteSecurityGroup",
-            "ModifySecurityGroupRules",
-            "UpdateSecurityGroupRule"
-        ]
+        source = ["aws.ec2"]
+        detail-type = ["AWS API Call via CloudTrail"]
+        detail = {
+            eventSource = ["ec2.amazonaws.com"],
+            eventName = [
+                //api action names
+                "AuthorizeSecurityGroupIngress",
+                "RevokeSecurityGroupIngress",
+                "CreateSecurityGroup",
+                "DeleteSecurityGroup",
+                "ModifySecurityGroupRules",
+                "UpdateSecurityGroupRule"
+            ]
+        }
     })
+
+    tags = {
+        project = "security_group_manager"
+    }
 }
 
 resource "aws_cloudwatch_event_target" "lambda" {
