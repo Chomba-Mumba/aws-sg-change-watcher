@@ -34,23 +34,27 @@ resource "aws_cloudwatch_event_target" "lambda" {
 
 resource "aws_cloudwatch_log_group" "manage_sg_lg" {
     name = "manage_sg_lg"
+    retention_in_days = 14
 }
 
 data "aws_iam_policy_document" "manage_sg_log_policy_doc" {
-    statement {
-        actions = [
-            "logs:CreateLogStream",
-            "logs:PutLogEvents",
-            "logs:PutLogEventsBatch",
-        ]
+  statement {
+    effect = "Allow"
 
-        resources = ["arn:aws:logs:*"]
+    actions = [
+      "logs:CreateLogStream",
+      "logs:PutLogEvents"
+    ]
 
-        principals {
-            identifiers = ["es.amazonaws.com"]
-            type = "Service"
-        }
+    resources = [
+      "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/events/manage_sg_lg:*"
+    ]
+
+    principals {
+      type        = "Service"
+      identifiers = ["events.amazonaws.com"]
     }
+  }
 }
 
 resource "aws_cloudwatch_log_resource_policy" "manage_sg_log_policy" {
