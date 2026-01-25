@@ -8,4 +8,4 @@ echo "successfully created go binary..."
 cd bin/
 
 echo "zipping go binary"
-zip manage_sg.zip bootstrap
+zip ../manage_sg.zip bootstrap

@@ -8,19 +8,18 @@ resource "aws_cloudwatch_event_rule" "manage_sg_rule" {
         detail = {
             eventSource = ["ec2.amazonaws.com"],
             eventName = [
-                //api action names
-                "AuthorizeSecurityGroupIngress",
-                "RevokeSecurityGroupIngress",
-                "CreateSecurityGroup",
-                "DeleteSecurityGroup",
-                "ModifySecurityGroupRules",
-                "UpdateSecurityGroupRule"
+            "CreateSecurityGroup",
+            "DeleteSecurityGroup",
+            "AuthorizeSecurityGroupIngress",
+            "RevokeSecurityGroupIngress",
+            "AuthorizeSecurityGroupEgress",
+            "RevokeSecurityGroupEgress"
             ]
         }
     })
 
     tags = {
-        project = "security_group_manager"
+        Project = "securtityGroupManager"
     }
 }
 
@@ -33,8 +32,11 @@ resource "aws_cloudwatch_event_target" "lambda" {
 // log events and errors to cloudwatch
 
 resource "aws_cloudwatch_log_group" "manage_sg_lg" {
-    name = "manage_sg_lg"
+    name = "/aws/events/manage_sg_lg"
     retention_in_days = 14
+    tags = {
+        Project = "securtityGroupManager"
+    }
 }
 
 data "aws_iam_policy_document" "manage_sg_log_policy_doc" {
