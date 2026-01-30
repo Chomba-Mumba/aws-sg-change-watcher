@@ -198,7 +198,33 @@ func removePublicDB(event Ec2Event, client ec2.Client, allowedCidr string) {
 
 }
 
-func removeDefaultSg()
+func removeStaleSg(vpcId *string, client ec2.Client, allowedCidr *string) {
+	sgIn := ec2.DescribeStaleSecurityGroupsInput{
+		VpcId: vpcId,
+	}
+	staleSgOut, err := client.DescribeStaleSecurityGroups(context.TODO(), &sgIn)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var stalePerms []types.IpPermission
+
+	for _, staleSecurityGroup := range staleSgOut.StaleSecurityGroupSet {
+		for _, stalePerm := range staleSecurityGroup.StaleIpPermissions {
+			ipPerm := types.IpPermission{
+				FromPort:   stalePerm.FromPort,
+				ToPort:     stalePerm.ToPort,
+				IpProtocol: stalePerm.IpProtocol,
+			}
+			stalePerms = append(stalePerms, ipPerm)
+		}
+
+		RevokeSecurityGroupRules(
+			types.SecurityGroup{GroupId: staleSecurityGroup.GroupId, IpPermissions: stalePerms},
+			client,
+		)
+	}
+}
 
 func Ptr(s string) *string {
 	return &s
